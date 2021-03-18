@@ -1,12 +1,24 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import finalUser
 
+
+# importing admin file 
+
+import finalAd
+
 class Ui_FirstWindow(object):
     def movetoUser(self):
         self.window1 = QtWidgets.QMainWindow()
         self.secondUI = finalUser.Ui_jobSeekerLogin()
         self.secondUI.setupUi(self.window1)
         self.window1.show()
+
+	        
+    def movetoAdmin(self):
+        self.window2= QtWidgets.QMainWindow()
+        self.adminUI= finalAd.Ui_AdminLogin()
+        self.adminUI.setupUi(self.window2)
+        self.window2.show() 
 
     def setupUi(self, FirstWindow):
         FirstWindow.setObjectName("FirstWindow")
@@ -125,7 +137,14 @@ class Ui_FirstWindow(object):
         self.btnUser.clicked.connect(self.movetoUser)
         self.btnUser.clicked.connect(lambda: self.closer(FirstWindow))
 
+        #moving to admin page
+        self.btnAdmin.clicked.connect(self.movetoAdmin)
+        self.btnAdmin.clicked.connect(lambda: self.close(FirstWindow))
+
     def closer(self, FirstWindow):
+        FirstWindow.hide()
+
+    def close(self, FirstWindow):
         FirstWindow.hide()
 
     def retranslateUi(self, FirstWindow):
