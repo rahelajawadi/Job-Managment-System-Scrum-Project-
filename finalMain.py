@@ -135,16 +135,16 @@ class Ui_FirstWindow(object):
         # calling the methods using lambda expression
         # Moving to the user page in order to login themselves
         self.btnUser.clicked.connect(self.movetoUser)
-        self.btnUser.clicked.connect(lambda: self.closer(FirstWindow))
+        self.btnUser.clicked.connect(lambda: self.movetoUserPage(FirstWindow))
 
         #moving to admin page
         self.btnAdmin.clicked.connect(self.movetoAdmin)
-        self.btnAdmin.clicked.connect(lambda: self.close(FirstWindow))
+        self.btnAdmin.clicked.connect(lambda: self.movetoAdminPage(FirstWindow))
 
-    def closer(self, FirstWindow):
+    def movetoUserPage(self, FirstWindow):
         FirstWindow.hide()
 
-    def close(self, FirstWindow):
+    def movetoAdminPage(self, FirstWindow):
         FirstWindow.hide()
 
     def retranslateUi(self, FirstWindow):
