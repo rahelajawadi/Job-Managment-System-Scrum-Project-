@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3
 import finalMain
+import userView
 
 
 class Ui_jobSeekerLogin(object):
@@ -21,6 +22,11 @@ class Ui_jobSeekerLogin(object):
         self.secondUI.setupUi(self.window1)
         self.window1.show()
 
+    def moveToUserView(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = userView.Ui_jobSeekerLogin()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
 
     def setupUi(self, jobSeekerLogin):
         jobSeekerLogin.setObjectName("jobSeekerLogin")
@@ -116,6 +122,35 @@ class Ui_jobSeekerLogin(object):
 
         self.retranslateUi(jobSeekerLogin)
         QtCore.QMetaObject.connectSlotsByName(jobSeekerLogin)
+
+        # calling the methods
+        self.login.clicked.connect(self.userSign)
+        self.cancel.clicked.connect(self.returnToMain)
+        self.cancel.clicked.connect(lambda: self.closer(jobSeekerLogin))
+
+    def closer(self, jobSeekerLogin):
+        jobSeekerLogin.hide()
+
+    def userSign(self):
+        username = self.userbame.text()
+        password = self.password.text()
+        db = sqlite3.connect("jobs.db")
+        res = db.execute("select * from userReg where name =? and password =?", (username, password))
+        message1 = QMessageBox()  # username = Rahela , password=12345
+        message1.setWindowTitle("Login")
+
+        if res.fetchall():
+            message1.setText(username + " login successfully")
+            message1.setIcon(QMessageBox.Information)
+            x = message1.exec_()
+            self.moveToUserView()
+
+        else:
+            message1.setText("Username or password is not valid!")
+            message1.setIcon(QMessageBox.Warning)
+            x = message1.exec_()
+        self.userbame.clear()
+        self.password.clear()
 
     def retranslateUi(self, jobSeekerLogin):
         _translate = QtCore.QCoreApplication.translate
