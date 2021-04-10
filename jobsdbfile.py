@@ -8,14 +8,17 @@ def createDB():
     #db.execute("create table userReg(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
     #"name, password )")
 
+    db.execute("create table AdLogin(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "name, password )")
+
 
     # insert values
-    db.execute( "INSERT INTO userReg (name, password) "
-    "VALUES('Rahela', '12345');")
+    db.execute( "INSERT INTO AdLogin (name, password) "
+    "VALUES('Admin', '12345');")
 
     db.commit()
 
-    cursor = db.execute("select * from userReg")
+    cursor = db.execute("select * from AdLogin")
     for i in cursor:
         print(i)
 

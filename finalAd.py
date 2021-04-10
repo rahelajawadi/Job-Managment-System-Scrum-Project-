@@ -3,11 +3,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3
 import finalMain
-
+import adminView
 
 class Ui_AdminLogin(object):
-
-
+    def moveToAdminView(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = adminView.Ui_jobSeekerLogin()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
 
     def returnToMain(self):
         self.window1 = QtWidgets.QMainWindow()
@@ -109,6 +112,43 @@ class Ui_AdminLogin(object):
 
         self.retranslateUi(AdminLogin)
         QtCore.QMetaObject.connectSlotsByName(AdminLogin)
+
+        # calling the Login method methods
+        self.login.clicked.connect(self.adminLogin)
+        self.login.clicked.connect(lambda: self.close(AdminLogin))
+
+        self.cancel.clicked.connect(self.returnToMain)
+        self.cancel.clicked.connect(lambda: self.closer(AdminLogin))
+
+    def close(self, AdminLogin):
+        AdminLogin.hide()
+
+    def closer(self, AdminLogin):
+        AdminLogin.hide()
+
+    def adminLogin(self):
+        username = self.userbame.text()
+        password = self.password.text()
+        db = sqlite3.connect("jobs.db")
+        res = db.execute("select * from AdLogin where name =? and password =?", (username, password))
+        message1 = QMessageBox()  # username = Admin , password=12345
+        message1.setWindowTitle("Login")
+
+        if res.fetchall():
+            message1.setText(username + " login successfully")
+            message1.setIcon(QMessageBox.Information)
+            x = message1.exec_()
+            self.moveToAdminView()
+
+
+        else:
+            message1.setText("Username or password is not valid!")
+            message1.setIcon(QMessageBox.Warning)
+            x = message1.exec_()
+        self.userbame.clear()
+        self.password.clear()
+
+
 
     def retranslateUi(self, AdminLogin):
         _translate = QtCore.QCoreApplication.translate
