@@ -1,7 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import finalMain
-
+import UserJobTable
 
 class Ui_jobSeekerLogin(object):
     def setupUi(self, jobSeekerLogin):
@@ -127,8 +127,11 @@ class Ui_jobSeekerLogin(object):
         self.retranslateUi(jobSeekerLogin)
         QtCore.QMetaObject.connectSlotsByName(jobSeekerLogin)
 
+        # Calling the methods
         self.btn_back.clicked.connect(lambda: self.closer(jobSeekerLogin))
         self.btn_back.clicked.connect(self.returnToMain)
+        self.pushButton_2.clicked.connect(self.moveToUserTable)
+        self.pushButton_2.clicked.connect(lambda: self.closer(jobSeekerLogin))
 
     def returnToMain(self):
         self.window1 = QtWidgets.QMainWindow()
@@ -138,6 +141,12 @@ class Ui_jobSeekerLogin(object):
 
     def closer(self, jobSeekerLogin):
         jobSeekerLogin.hide()
+
+    def moveToUserTable(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = UserJobTable.Ui_UserTable()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
 
     def retranslateUi(self, jobSeekerLogin):
         _translate = QtCore.QCoreApplication.translate
