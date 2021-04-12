@@ -162,11 +162,11 @@ class Ui_UserTable(object):
 
         # calling the methods
         self.loadData()
+        self.btn_search.clicked.connect(self.searchJob)
         self.logout.clicked.connect(lambda: self.closer(UserTable))
         self.btn_back.clicked.connect(lambda: self.closer(UserTable))
         self.logout.clicked.connect(self.returnToMain)
         self.btn_back.clicked.connect(self.moveToUserView)
-
 
     def moveToUserView(self):
         self.window1 = QtWidgets.QMainWindow()
@@ -182,6 +182,27 @@ class Ui_UserTable(object):
 
     def closer(self, UserTable):
         UserTable.hide()
+
+    def searchJob(self):
+        searchID = self.lineEdit.text()
+        try:
+            self.conn = sqlite3.connect("jobs.db")
+            self.c = self.conn.cursor()
+            result = self.c.execute("SELECT * from jobInfo WHERE ID=" + str(searchID))
+
+            row = result.fetchone()
+            for i in row:
+                print(i)
+            serachresult = "Job ID : " + str(row[0]) + "  " + '\n' + "Job Title : " + str(
+                row[1]) + '\n' + "Organization: " + str(row[2]) + '\n' + "Job Details: " + str(
+                row[3]) + '\n' + "Announced Date: " + str(row[4] + '\n' + "Closed Date: " + str(row[5]))
+            QMessageBox.information(QMessageBox(), 'Result of your search', serachresult)
+            self.conn.commit()
+            self.c.close()
+            self.conn.close()
+        except Exception:
+            QMessageBox.warning(QMessageBox(), 'Error', 'Could not Find product from the database.')
+        self.lineEdit.clear()
 
 
 
