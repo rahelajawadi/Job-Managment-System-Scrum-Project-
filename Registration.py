@@ -11,6 +11,7 @@ class Ui_jobSeekerLogin(object):
         self.secondUI = finalMain.Ui_FirstWindow()
         self.secondUI.setupUi(self.window1)
         self.window1.show()
+
     def setupUi(self, jobSeekerLogin):
         jobSeekerLogin.setObjectName("jobSeekerLogin")
         jobSeekerLogin.resize(1200, 750)
@@ -203,9 +204,43 @@ class Ui_jobSeekerLogin(object):
         # calling the methods
         self.cancel.clicked.connect(self.returnToMain)
         self.cancel.clicked.connect(lambda: self.closer(jobSeekerLogin))
+        self.btn_reg.clicked.connect(self.regSuccess)
 
     def closer(self, jobSeekerLogin):
             jobSeekerLogin.hide()
+
+    def regSuccess(self):
+            name = self.name.text()
+            userbame = self.userbame.text()
+            password = self.password.text()
+            email = self.email.text()
+            phone= self.phone.text()
+            combo = self.comboBox.currentText()
+            # open the existing database
+            db = sqlite3.connect("jobs.db")
+            message1 = QMessageBox()
+
+            if (self.checkBox.isChecked()):
+                    # insert a values into a database
+
+                    db.execute("""INSERT INTO RegTable(name, username, password,email, phone, gender)
+                                            VALUES(?,?,?,?,?,?)""", (name, userbame, password, phone, email, combo))
+                    db.commit()
+                    message1.setText(name + " Regesterd successfully")
+                    message1.setIcon(QMessageBox.Information)
+                    x = message1.exec_()
+
+            else:
+                    message1.setText("Sorry, checkbox is not selected !")
+                    message1.setIcon(QMessageBox.Warning)
+                    x = message1.exec_()
+
+            self.name.clear()
+            self.userbame.clear()
+            self.password.clear()
+            self.email.clear()
+            self.phone.clear()
+            self.checkBox.setChecked(False)
 
 
     def retranslateUi(self, jobSeekerLogin):
