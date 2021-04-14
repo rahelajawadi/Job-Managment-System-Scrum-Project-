@@ -5,6 +5,7 @@ import finalUser
 # importing admin file 
 
 import finalAd
+import Registration
 
 class Ui_FirstWindow(object):
     def movetoUser(self):
@@ -18,7 +19,13 @@ class Ui_FirstWindow(object):
         self.window2= QtWidgets.QMainWindow()
         self.adminUI= finalAd.Ui_AdminLogin()
         self.adminUI.setupUi(self.window2)
-        self.window2.show() 
+        self.window2.show()
+
+    def movetoUserReg(self):
+        self.window3 = QtWidgets.QMainWindow()
+        self.regUI = Registration.Ui_jobSeekerLogin()
+        self.regUI.setupUi(self.window3)
+        self.window3.show()
 
     def setupUi(self, FirstWindow):
         FirstWindow.setObjectName("FirstWindow")
@@ -141,10 +148,17 @@ class Ui_FirstWindow(object):
         self.btnAdmin.clicked.connect(self.movetoAdmin)
         self.btnAdmin.clicked.connect(lambda: self.movetoAdminPage(FirstWindow))
 
+        #moving to registration Page
+        self.btnRegister.clicked.connect(self.movetoUserReg)
+        self.btnRegister.clicked.connect(lambda: self.exit(FirstWindow))
+
     def movetoUserPage(self, FirstWindow):
         FirstWindow.hide()
 
     def movetoAdminPage(self, FirstWindow):
+        FirstWindow.hide()
+
+    def exit(self, FirstWindow):
         FirstWindow.hide()
 
     def retranslateUi(self, FirstWindow):
