@@ -5,6 +5,16 @@ import finalMain
 import adminView
 
 class Ui_MainWindow(object):
+    def loadData(self):
+            db = sqlite3.connect("jobs.db")
+            query = "select * from jobInfo"
+            res = db.execute(query)
+            self.tableWidget.setRowCount(0)
+            for row_number, row_data in enumerate(res):
+                    self.tableWidget.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+            db.close()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -227,6 +237,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         # Calling the methods
+        self.loadData()
         self.logout.clicked.connect(lambda: self.closer(MainWindow))
         self.logout.clicked.connect(self.returnToMain)
         self.btn_back.clicked.connect(lambda: self.closer(MainWindow))

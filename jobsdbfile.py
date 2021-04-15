@@ -18,6 +18,13 @@ def createDB():
     #db.execute("create table AdLogin(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
     #"name, password )")
 
+    #db.execute("create table jobInfo(ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+     #          "title text, organization text ,details text, open text, close text)")
+
+    # insert values
+    db.execute("INSERT INTO jobInfo (title, organization,details, open, close) "
+               "VALUES('Software Enginier ', 'SYPA', 'Bachelor Degree', '6/30/2020', '7/30.2020');")
+
 
     # insert values
     #db.execute( "INSERT INTO AdLogin (name, password) "
@@ -25,7 +32,7 @@ def createDB():
 
     db.commit()
 
-    cursor = db.execute("select * from RegTable")
+    cursor = db.execute("select * from jobInfo")
     for i in cursor:
         print(i)
 
