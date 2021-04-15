@@ -243,6 +243,8 @@ class Ui_MainWindow(object):
         self.btn_back.clicked.connect(lambda: self.closer(MainWindow))
         self.btn_back.clicked.connect(self.moveToAdminView)
         self.btn_add.clicked.connect(self.addJob)
+        self.btn_delete.clicked.connect(self.deleteJob)
+        self.tableWidget.itemSelectionChanged.connect(self.selection)
 
     def moveToAdminView(self):
             self.window1 = QtWidgets.QMainWindow()
@@ -288,6 +290,37 @@ class Ui_MainWindow(object):
 
     def closer(self, MainWindow):
             MainWindow.hide()
+
+    def selection(self):
+        print("")
+
+    def getSelectedRow(self):
+        return self.tableWidget.current
+
+    def deleteJob(self):
+
+        try:
+            sqliteConnection = sqlite3.connect('jobs.db')
+            cursor = sqliteConnection.cursor()
+            job_id = self.tableWidget.item(self.getSelectedRow(), 0).text()
+            # Deleting single record
+            sql_delete_query = """DELETE from jobInfo where ID = ?"""
+            cursor.execute(sql_delete_query, job_id)
+            sqliteConnection.commit()
+            message = QMessageBox()
+            message.setText("Record deleted successfully ")
+            message.setIcon(QMessageBox.Information)
+            x = message.exec_()
+            self.lineEdit.clear()
+            self.loadData()
+            cursor.close()
+
+        except sqlite3.Error as error:
+            message.setText("Failed to delete record from sqlite table", error)
+            message.setIcon(QMessageBox.Warning)
+            x = message.exec_()
+
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
