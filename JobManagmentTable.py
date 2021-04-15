@@ -245,6 +245,9 @@ class Ui_MainWindow(object):
         self.btn_add.clicked.connect(self.addJob)
         self.btn_delete.clicked.connect(self.deleteJob)
         self.tableWidget.itemSelectionChanged.connect(self.selection)
+        self.btn_search.clicked.connect(self.searchJob)
+        self.btn_load.clicked.connect(self.editJobs)
+        self.btn_update.clicked.connect(self.updateJob)
 
     def moveToAdminView(self):
             self.window1 = QtWidgets.QMainWindow()
@@ -320,7 +323,70 @@ class Ui_MainWindow(object):
             message.setIcon(QMessageBox.Warning)
             x = message.exec_()
 
+    def editJobs(self):
+        job_id = self.tableWidget.item(self.getSelectedRow(), 0).text()
+        self.conn = sqlite3.connect("jobs.db")
+        self.c = self.conn.cursor()
+        result = self.c.execute("SELECT * from jobInfo WHERE ID="+str(job_id))
+        row = result.fetchone()
+        self.title.setText(str(row[1]))
+        self.organization.setText(str(row[2]))
+        self.details.setText(str(row[3]))
+        self.conn.commit()
+        self.c.close()
+        self.conn.close()
 
+    def updateJob(self):
+        job_id = self.tableWidget.item(self.getSelectedRow(), 0).text()
+        title = self.title.text()
+        org = self.organization.text()
+        detail = self.details.text()
+        temp_var = self.announced.date()
+        announced = temp_var.toPyDate()
+        clz = self.closed.date()
+        close = clz.toPyDate()
+        try:
+            sqliteConnection = sqlite3.connect('jobs.db')
+            cursor = sqliteConnection.cursor()
+            sqlite_update_query = """Update jobInfo set title = ?, organization = ? , details=?, open=?,close=? where ID = ?"""
+            columnValues = (title,org,detail,announced, close, job_id)
+            cursor.execute(sqlite_update_query, columnValues)
+            sqliteConnection.commit()
+            message1 = QMessageBox()
+            message1.setText( "Job with ID: "+ job_id+" Updated successfully")
+            message1.setIcon(QMessageBox.Information)
+            x = message1.exec_()
+
+            self.loadData()
+            cursor.close()
+            self.title.clear()
+            self.organization.clear()
+            self.details.clear()
+
+        except Exception:
+            QMessageBox.warning(QMessageBox(), 'Error', 'Could not Find product from the database.')
+
+
+    def searchJob(self):
+        searchID = self.lineEdit.text()
+        try:
+            self.conn = sqlite3.connect("jobs.db")
+            self.c = self.conn.cursor()
+            result = self.c.execute("SELECT * from jobInfo WHERE ID=" + str(searchID))
+
+            row = result.fetchone()
+            for i in row:
+                print(i)
+            serachresult = "Job ID : " + str(row[0]) + "  " + '\n' + "Job Title : " + str(
+                row[1]) + "   " + '\n' + "Organization: " + str(row[2]) + '\n' + " Job Details: " + str(
+                row[3]) + '\n' + "Announced Date: " + str(row[4] + '\n' + "Closed Date: " + str(row[5]))
+            QMessageBox.information(QMessageBox(), 'Result of your search', serachresult)
+            self.conn.commit()
+            self.c.close()
+            self.conn.close()
+        except Exception:
+            QMessageBox.warning(QMessageBox(), 'Error', 'Could not Find product from the database.')
+        self.lineEdit.clear()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
