@@ -242,6 +242,7 @@ class Ui_MainWindow(object):
         self.logout.clicked.connect(self.returnToMain)
         self.btn_back.clicked.connect(lambda: self.closer(MainWindow))
         self.btn_back.clicked.connect(self.moveToAdminView)
+        self.btn_add.clicked.connect(self.addJob)
 
     def moveToAdminView(self):
             self.window1 = QtWidgets.QMainWindow()
@@ -254,6 +255,36 @@ class Ui_MainWindow(object):
             self.secondUI = finalMain.Ui_FirstWindow()
             self.secondUI.setupUi(self.window1)
             self.window1.show()
+
+    def addJob(self):
+            title = self.title.text()
+            organization = self.organization.text()
+            details = self.details.text()
+            temp_var = self.announced.date()
+            announced = temp_var.toPyDate()
+            clz = self.closed.date()
+            close = clz.toPyDate()
+
+            # open the existing database
+            db = sqlite3.connect("jobs.db")
+            message1 = QMessageBox()
+
+            if title == "":
+                    message1.setText("Sorry, title field can't be empty !")
+                    message1.setIcon(QMessageBox.Warning)
+                    x = message1.exec_()
+            else:
+                    # insert a values into a database
+                    db.execute("""INSERT INTO jobInfo(title, organization,details, open, close) VALUES(?,?,?,?,?)""",
+                               (title, organization, details, announced, close))
+                    db.commit()
+                    message1.setText(organization + "'s job added successfully")
+                    message1.setIcon(QMessageBox.Information)
+                    x = message1.exec_()
+                    self.loadData()
+            self.title.clear()
+            self.organization.clear()
+            self.details.clear()
 
     def closer(self, MainWindow):
             MainWindow.hide()
