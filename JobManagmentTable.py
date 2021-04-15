@@ -1,9 +1,8 @@
-
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3
+import finalMain
+import adminView
 
 class Ui_MainWindow(object):
 
@@ -226,6 +225,27 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        # Calling the methods
+        self.logout.clicked.connect(lambda: self.closer(MainWindow))
+        self.logout.clicked.connect(self.returnToMain)
+        self.btn_back.clicked.connect(lambda: self.closer(MainWindow))
+        self.btn_back.clicked.connect(self.moveToAdminView)
+
+    def moveToAdminView(self):
+            self.window1 = QtWidgets.QMainWindow()
+            self.secondUI = adminView.Ui_jobSeekerLogin()
+            self.secondUI.setupUi(self.window1)
+            self.window1.show()
+
+    def returnToMain(self):
+            self.window1 = QtWidgets.QMainWindow()
+            self.secondUI = finalMain.Ui_FirstWindow()
+            self.secondUI.setupUi(self.window1)
+            self.window1.show()
+
+    def closer(self, MainWindow):
+            MainWindow.hide()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
