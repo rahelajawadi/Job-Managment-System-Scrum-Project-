@@ -160,8 +160,6 @@ class Ui_jobSeekerLogin(object):
         self.pushButton_6.setText(_translate("jobSeekerLogin", "Update Resume"))
         self.btn_back.setText(_translate("jobSeekerLogin", "logout"))
 
-
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
