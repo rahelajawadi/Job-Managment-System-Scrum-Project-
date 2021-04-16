@@ -164,7 +164,14 @@ class Ui_UserTable(object):
         self.btn_search.clicked.connect(self.searchJob)
         self.btn_apply.clicked.connect(self.moveToApply)
         self.btn_apply.clicked.connect(lambda: self.closer(UserTable))
+        self.btn_back.clicked.connect(lambda: self.closer(UserTable))
+        self.btn_back.clicked.connect(self.moveToUserView)
 
+    def moveToUserView(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = userView.Ui_jobSeekerLogin()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
 
     def closer(self, UserTable):
         UserTable.hide()
