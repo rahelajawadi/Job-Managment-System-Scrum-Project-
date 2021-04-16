@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import finalMain
 import userView
+import Apply
 import sqlite3
 
 class Ui_UserTable(object):
@@ -146,6 +147,19 @@ class Ui_UserTable(object):
 
         self.retranslateUi(UserTable)
         QtCore.QMetaObject.connectSlotsByName(UserTable)
+
+        #Calling the methods
+        self.btn_apply.clicked.connect(self.moveToApply)
+        self.btn_apply.clicked.connect(lambda: self.closer(UserTable))
+
+    def closer(self, UserTable):
+        UserTable.hide()
+
+    def moveToApply(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = Apply.Ui_addCV()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
 
     def retranslateUi(self, UserTable):
         _translate = QtCore.QCoreApplication.translate
