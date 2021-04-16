@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import finalMain
+import JobManagmentTable
 
 class Ui_jobSeekerLogin(object):
     def setupUi(self, jobSeekerLogin):
@@ -111,6 +112,8 @@ class Ui_jobSeekerLogin(object):
         # calling the methods
         self.btn_back.clicked.connect(lambda: self.closer(jobSeekerLogin))
         self.btn_back.clicked.connect(self.returnToMain)
+        self.pushButton.clicked.connect(self.moveToAdminTable)
+        self.pushButton.clicked.connect(lambda: self.closer(jobSeekerLogin))
 
     def returnToMain(self):
         self.window1 = QtWidgets.QMainWindow()
@@ -120,6 +123,15 @@ class Ui_jobSeekerLogin(object):
 
     def closer(self, jobSeekerLogin):
         jobSeekerLogin.hide()
+
+    def closer(self, jobSeekerLogin):
+        jobSeekerLogin.hide()
+
+    def moveToAdminTable(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = JobManagmentTable.Ui_MainWindow()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
 
     def retranslateUi(self, jobSeekerLogin):
         _translate = QtCore.QCoreApplication.translate
