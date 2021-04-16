@@ -166,10 +166,18 @@ class Ui_UserTable(object):
         self.btn_apply.clicked.connect(lambda: self.closer(UserTable))
         self.btn_back.clicked.connect(lambda: self.closer(UserTable))
         self.btn_back.clicked.connect(self.moveToUserView)
+        self.logout.clicked.connect(lambda: self.closer(UserTable))
+        self.logout.clicked.connect(self.returnToMain)
 
     def moveToUserView(self):
         self.window1 = QtWidgets.QMainWindow()
         self.secondUI = userView.Ui_jobSeekerLogin()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
+
+    def returnToMain(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = finalMain.Ui_FirstWindow()
         self.secondUI.setupUi(self.window1)
         self.window1.show()
 
