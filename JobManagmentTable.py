@@ -298,7 +298,7 @@ class Ui_MainWindow(object):
         print("")
 
     def getSelectedRow(self):
-        return self.tableWidget.current
+        return self.tableWidget.currentRow()
 
     def deleteJob(self):
 
