@@ -3,6 +3,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
+import UserJobTable
 
 
 class Ui_addCV(object):
@@ -60,7 +61,26 @@ class Ui_addCV(object):
         self.retranslateUi(addCV)
         QtCore.QMetaObject.connectSlotsByName(addCV)
 
+        # Calling the method
+        self.btn_apply.clicked.connect(self.submitCV)
+        self.logout.clicked.connect(self.moveToUserTable)
+        self.logout.clicked.connect(lambda: self.closer(addCV))
 
+    def closer(self, addCV):
+        addCV.hide()
+
+    def moveToUserTable(self):
+        self.window1 = QtWidgets.QMainWindow()
+        self.secondUI = UserJobTable.Ui_UserTable()
+        self.secondUI.setupUi(self.window1)
+        self.window1.show()
+
+    def submitCV(self):
+        self.plainTextEdit.clear()
+        message = QMessageBox()
+        message.setText("You applied for the job successfully ")
+        message.setIcon(QMessageBox.Information)
+        x = message.exec_()
 
     def retranslateUi(self, addCV):
         _translate = QtCore.QCoreApplication.translate
