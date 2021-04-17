@@ -327,7 +327,7 @@ class Ui_MainWindow(object):
         job_id = self.tableWidget.item(self.getSelectedRow(), 0).text()
         self.conn = sqlite3.connect("jobs.db")
         self.c = self.conn.cursor()
-        result = self.c.execute("SELECT * from jobInfo WHERE ID="+str(job_id))
+        result = self.c.execute("SELECT * from jobInfo WHERE ID=" + str(job_id))
         row = result.fetchone()
         self.title.setText(str(row[1]))
         self.organization.setText(str(row[2]))
